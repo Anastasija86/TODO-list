@@ -1,0 +1,20 @@
+.form {
+  width: 400px;
+}
+
+.input {
+  width: 250px;
+  height: 25px;
+  border-radius: 4px;
+  border: 1px solid none;
+  border-width: thin;
+  border-color: lightgrey;
+  margin-left: 10px;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.button{
+    background-color: transparent;
+    border: 0em;
+    margin-left: -30px;
+}
