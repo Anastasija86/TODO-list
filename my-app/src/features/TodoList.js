@@ -1,21 +1,39 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "../features/TodoList.module.css";
+
+
 import { FcFullTrash } from "react-icons/fc";
 import { FcEditImage } from "react-icons/fc";
+
 import { useDispatch, useSelector } from "react-redux";
-import toogleTodo from "../features/todoSlice";
+import { todoToggle, deleteTodo } from "../features/todoSlice";
 
 export default function TodoList() {
-  const todos = useSelector((state) => state.todos);
-  console.log(todos);
+  const todos = useSelector((state) => state.todos.todos);
+  const filter = useSelector((state)=>state.todos.filter.toLowerCase())
   const dispatch = useDispatch();
-  const todoToogle = ({ status, id }) => {
-    dispatch(toogleTodo(status, id));
+  const toggleTodo = ({ status, id }) => {
+    dispatch(todoToggle({ status, id }));
   };
+  const onDeleteTodo = ({ id }) => {
+    dispatch(deleteTodo({ id }));
+  };
+  const getVisibleTodos = () => {
+    let visibleTodos = todos;
+    if (filter.length > 0) {
+      visibleTodos = todos.filter((todo)=>todo.activity.toLowerCase().includes(filter.toLowerCase()))
+    }
+    return visibleTodos;
+  }
+
+  const visibleTodos = getVisibleTodos();
+
+  console.log(visibleTodos)
+  
   return (
     <div>
-      {todos.length > 0 && (
+      {todos.length && (
         <div className={styles.container}>
           <table className={styles.table}>
             <tbody>
@@ -26,7 +44,7 @@ export default function TodoList() {
                 <th></th>
                 <th></th>
               </tr>
-              {todos.map(({ number, activity, key, completed }) => {
+              {visibleTodos.map(({ number, activity, key, completed }) => {
                 const status = JSON.parse(completed);
                 return (
                   <tr key={key}>
@@ -36,7 +54,7 @@ export default function TodoList() {
                       <input
                         type="checkbox"
                         checked={status}
-                        onChange={() => todoToogle({ status, id: key })}
+                        onChange={() => toggleTodo({ status, id: key })}
                       ></input>
                     </td>
                     {/* <td>{status}</td> */}
@@ -46,7 +64,11 @@ export default function TodoList() {
                       </button>
                     </td>
                     <td>
-                      <button className={styles.button} type="button">
+                      <button
+                        className={styles.button}
+                        type="button"
+                        onClick={() => onDeleteTodo({ id: key })}
+                      >
                         <FcFullTrash />
                       </button>
                     </td>
