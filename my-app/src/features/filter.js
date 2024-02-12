@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../features/Filter.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../features/todoSlice";
 
 export default function Filter() {
-  const [name, setName] = useState("");
+const filter = useSelector((state)=>state.todos.filter)
 
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const text = e.target.value;
-    setName(text);
-    dispatch(setFilter(name));
+    dispatch(setFilter(text));
   };
 
   return (
@@ -24,7 +23,7 @@ export default function Filter() {
             className={styles.input}
             placeholder="name"
             type="text"
-            value={name}
+            value={filter}
             onChange={handleChange}
           ></input>
         </label>
