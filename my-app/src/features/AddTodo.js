@@ -22,12 +22,15 @@ export default function AddTodo() {
   //     return number + 1;
   // }
 
+  const getNumber = () => {
+    return todos.length +1
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     const value = e.target.task.value;
     const form = e.target;
     const newTask = {
-      number: 5,
+      number: getNumber(),
       activity: value,
       key: nanoid(),
       completed: "false",

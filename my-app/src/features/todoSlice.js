@@ -27,7 +27,10 @@ const todoSlice = createSlice({
     deleteTodo(state, action) {
       const { id } = action.payload;
 
-      state.todos = state.todos.filter((todo) => todo.key !== id);
+      state.todos = state.todos
+        .filter((todo) => todo.key !== id);
+      state.todos.map((todo,index)=>todo.number= index+1)
+
     },
     modalToggle(state, action) {
       const isOpen = action.payload;
