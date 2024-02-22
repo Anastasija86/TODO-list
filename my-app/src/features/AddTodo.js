@@ -1,29 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "../features/AddTodo.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo } from "./todoSlice";
 import { nanoid } from "@reduxjs/toolkit";
-import { modalToggle } from '../features/todoSlice';
+import { modalToggle, fetchTask } from "../features/todoSlice";
 
 export default function AddTodo() {
   const dispatch = useDispatch();
-    const todos = useSelector((state) => state.todos.todos);
-    const isOpen = useSelector((state)=>state.todos.isOpen)
+  const todos = useSelector((state) => state.todos.todos);
+  const task = useSelector((state) => state.todos.fetchedTask);
+  const isOpen = useSelector((state) => state.todos.isOpen);
 
-//   const numberArray = todos.array.forEach((element) => {
-//     return element.number;
-//   });
-//   console.log(numberArray);
-
-  // const lastNumber = () => {
-  //     return
-  // };
-  // const nextNumber = (number) => {
-  //     return number + 1;
-  // }
+  useEffect(() => {
+    dispatch(fetchTask())
+  }, [dispatch])
 
   const getNumber = () => {
-    return todos.length +1
+    return todos.length + 1;
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,24 +29,24 @@ export default function AddTodo() {
       completed: "false",
     };
     dispatch(addTodo(newTask));
-      form.reset();
-      dispatch(modalToggle(isOpen));
+    form.reset();
+    dispatch(modalToggle(isOpen));
   };
   return (
     <div className={styles.container}>
       <h1 className={styles.header}>Add new task </h1>
       <div className={styles.addConteiner}>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit} name="addTask">
           <input
             className={styles.input}
             list="tasks"
-            name="task"
+            name="addTask"
             id="task"
             type="text"
           ></input>
           <datalist id="tasks">
-            <option value="Homework"></option>
-            <option value="Dinner"></option>
+            <option>{task.activity}</option>)
+
           </datalist>
           <button className={styles.button} type="submit">
             Add

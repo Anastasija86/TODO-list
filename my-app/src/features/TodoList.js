@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "../features/TodoList.module.css";
-
+import { Link, Outlet } from "react-router-dom";
 
 import { FcFullTrash } from "react-icons/fc";
 import { FcEditImage } from "react-icons/fc";
@@ -11,7 +11,7 @@ import { todoToggle, deleteTodo } from "../features/todoSlice";
 
 export default function TodoList() {
   const todos = useSelector((state) => state.todos.todos);
-  const filter = useSelector((state)=>state.todos.filter.toLowerCase())
+  const filter = useSelector((state) => state.todos.filter.toLowerCase());
   const dispatch = useDispatch();
   const toggleTodo = ({ status, id }) => {
     dispatch(todoToggle({ status, id }));
@@ -22,15 +22,16 @@ export default function TodoList() {
   const getVisibleTodos = () => {
     let visibleTodos = todos;
     if (filter.length > 0) {
-      visibleTodos = todos.filter((todo)=>todo.activity.toLowerCase().includes(filter.toLowerCase()))
+      visibleTodos = todos.filter((todo) =>
+        todo.activity.toLowerCase().includes(filter.toLowerCase())
+      );
     }
     return visibleTodos;
-  }
+  };
 
   const visibleTodos = getVisibleTodos();
 
-  console.log(visibleTodos)
-  
+
   return (
     <div>
       {todos.length && (
@@ -59,9 +60,13 @@ export default function TodoList() {
                     </td>
                     {/* <td>{status}</td> */}
                     <td>
-                      <button className={styles.button} type="button">
+                      <Link
+                        to={`/editTask/${key}`}
+                        className={styles.button}
+                        type="button"
+                      >
                         <FcEditImage />
-                      </button>
+                      </Link>
                     </td>
                     <td>
                       <button
@@ -79,6 +84,7 @@ export default function TodoList() {
           </table>
         </div>
       )}
+      <Outlet/>
     </div>
   );
 }

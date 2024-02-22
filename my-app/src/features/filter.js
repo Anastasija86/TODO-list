@@ -15,12 +15,13 @@ const filter = useSelector((state)=>state.todos.filter)
 
   return (
     <div>
-      <form className={styles.form}>
+      <form className={styles.form} name="filter">
         <label>
           {" "}
           Find task
           <input
             className={styles.input}
+            name="filter"
             placeholder="name"
             type="text"
             value={filter}
